@@ -16,15 +16,16 @@ app.use(express.json())
 //db.sequelize.sync();
 
 
-app.all('/myAPIroute*', (req, res) => {
+app.all('/api*', (req, res) => {
      
+    console.log(db)
     // Find all users
     db.produto.findAll().then(products => {
-        res.status(200).send({
-            title: "Node Express API",
-            version: "0.0.1",
-            products: products
-        });
+        // res.status(200).send({
+        //     title: "Node Express API",
+        //     version: "0.0.1",
+        //     products: products
+        // });
     });
     
 

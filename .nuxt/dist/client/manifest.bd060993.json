@@ -1,0 +1,10 @@
+{
+  "name": "quiz",
+  "short_name": "quiz",
+  "description": "A basic NUXT.js",
+  "icons": [],
+  "start_url": "/?standalone=true",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "lang": "en"
+}

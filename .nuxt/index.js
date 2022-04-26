@@ -1,15 +1,14 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
+
 import Meta from 'vue-meta'
 import ClientOnly from 'vue-client-only'
 import NoSsr from 'vue-no-ssr'
 import { createRouter } from './router.js'
 import NuxtChild from './components/nuxt-child.js'
-import NuxtError from '..\\layouts\\error.vue'
+import NuxtError from './components/nuxt-error.vue'
 import Nuxt from './components/nuxt.js'
 import App from './App.js'
 import { setContext, getLocation, getRouteData, normalizeError } from './utils'
-import { createStore } from './store.js'
 
 /* Plugins */
 
@@ -17,7 +16,6 @@ import nuxt_plugin_plugin_7d0112db from 'nuxt_plugin_plugin_7d0112db' // Source:
 import nuxt_plugin_plugin_9c77e20e from 'nuxt_plugin_plugin_9c77e20e' // Source: .\\vuetify\\plugin.js (mode: 'all')
 import nuxt_plugin_workbox_6d9b75cc from 'nuxt_plugin_workbox_6d9b75cc' // Source: .\\workbox.js (mode: 'client')
 import nuxt_plugin_metaplugin_f60900cc from 'nuxt_plugin_metaplugin_f60900cc' // Source: .\\pwa\\meta.plugin.js (mode: 'all')
-import nuxt_plugin_iconplugin_ecb9b5e4 from 'nuxt_plugin_iconplugin_ecb9b5e4' // Source: .\\pwa\\icon.plugin.js (mode: 'all')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -59,32 +57,16 @@ Vue.use(Meta, {"keyName":"head","attribute":"data-n-head","ssrAttribute":"data-n
 
 const defaultTransition = {"name":"page","mode":"out-in","appear":true,"appearClass":"appear","appearActiveClass":"appear-active","appearToClass":"appear-to"}
 
-const originalRegisterModule = Vuex.Store.prototype.registerModule
-
-function registerModule (path, rawModule, options = {}) {
-  const preserveState = process.client && (
-    Array.isArray(path)
-      ? !!path.reduce((namespacedState, path) => namespacedState && namespacedState[path], this.state)
-      : path in this.state
-  )
-  return originalRegisterModule.call(this, path, rawModule, { preserveState, ...options })
-}
-
 async function createApp(ssrContext, config = {}) {
   const router = await createRouter(ssrContext, config)
-
-  const store = createStore(ssrContext)
-  // Add this.$router into store actions/mutations
-  store.$router = router
 
   // Create Root instance
 
   // here we inject the router and store to all child components,
   // making them available everywhere as `this.$router` and `this.$store`.
   const app = {
-    head: {"titleTemplate":"%s - quiz","title":"quiz","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":""},{"name":"format-detection","content":"telephone=no"},{"hid":"charset","charset":"utf-8"},{"hid":"mobile-web-app-capable","name":"mobile-web-app-capable","content":"yes"},{"hid":"apple-mobile-web-app-title","name":"apple-mobile-web-app-title","content":"quiz"},{"hid":"og:type","name":"og:type","property":"og:type","content":"website"},{"hid":"og:title","name":"og:title","property":"og:title","content":"quiz"},{"hid":"og:site_name","name":"og:site_name","property":"og:site_name","content":"quiz"},{"hid":"og:description","name":"og:description","property":"og:description","content":"## Build Setup"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"},{"rel":"stylesheet","type":"text\u002Fcss","href":"https:\u002F\u002Ffonts.googleapis.com\u002Fcss?family=Roboto:100,300,400,500,700,900&display=swap"},{"rel":"stylesheet","type":"text\u002Fcss","href":"https:\u002F\u002Fcdn.jsdelivr.net\u002Fnpm\u002F@mdi\u002Ffont@latest\u002Fcss\u002Fmaterialdesignicons.min.css"},{"hid":"shortcut-icon","rel":"shortcut icon","href":"\u002F_nuxt\u002Ficons\u002Ficon_64x64.e3e9fb.png"},{"hid":"apple-touch-icon","rel":"apple-touch-icon","href":"\u002F_nuxt\u002Ficons\u002Ficon_512x512.e3e9fb.png","sizes":"512x512"},{"rel":"manifest","href":"\u002F_nuxt\u002Fmanifest.1b0165fa.json","hid":"manifest"}],"style":[],"script":[],"htmlAttrs":{"lang":"en"}},
+    head: {"titleTemplate":"%s - quiz","title":"quiz","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":""},{"name":"format-detection","content":"telephone=no"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"},{"rel":"stylesheet","type":"text\u002Fcss","href":"https:\u002F\u002Ffonts.googleapis.com\u002Fcss?family=Roboto:100,300,400,500,700,900&display=swap"},{"rel":"stylesheet","type":"text\u002Fcss","href":"https:\u002F\u002Fcdn.jsdelivr.net\u002Fnpm\u002F@mdi\u002Ffont@latest\u002Fcss\u002Fmaterialdesignicons.min.css"}],"style":[],"script":[]},
 
-    store,
     router,
     nuxt: {
       defaultTransition,
@@ -129,9 +111,6 @@ async function createApp(ssrContext, config = {}) {
     ...App
   }
 
-  // Make app available into store via this.app
-  store.app = app
-
   const next = ssrContext ? ssrContext.next : location => app.router.push(location)
   // Resolve route
   let route
@@ -144,7 +123,6 @@ async function createApp(ssrContext, config = {}) {
 
   // Set context to app.context
   await setContext(app, {
-    store,
     route,
     next,
     error: app.nuxt.error.bind(app),
@@ -171,9 +149,6 @@ async function createApp(ssrContext, config = {}) {
       app.context[key] = value
     }
 
-    // Add into store
-    store[key] = app[key]
-
     // Check if plugin not already installed
     const installKey = '__nuxt_' + key + '_installed__'
     if (Vue[installKey]) {
@@ -194,13 +169,6 @@ async function createApp(ssrContext, config = {}) {
 
   // Inject runtime config as $config
   inject('config', config)
-
-  if (process.client) {
-    // Replace store state before plugins execution
-    if (window.__NUXT__ && window.__NUXT__.state) {
-      store.replaceState(window.__NUXT__.state)
-    }
-  }
 
   // Add enablePreview(previewData = {}) in context for plugins
   if (process.static && process.client) {
@@ -225,10 +193,6 @@ async function createApp(ssrContext, config = {}) {
 
   if (typeof nuxt_plugin_metaplugin_f60900cc === 'function') {
     await nuxt_plugin_metaplugin_f60900cc(app.context, inject)
-  }
-
-  if (typeof nuxt_plugin_iconplugin_ecb9b5e4 === 'function') {
-    await nuxt_plugin_iconplugin_ecb9b5e4(app.context, inject)
   }
 
   // Lock enablePreview in context
@@ -267,7 +231,6 @@ async function createApp(ssrContext, config = {}) {
   })
 
   return {
-    store,
     app,
     router
   }

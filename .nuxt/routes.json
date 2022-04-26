@@ -1,16 +1,8 @@
 [
   {
-    "name": "inspire",
-    "path": "/inspire",
-    "component": "E:\\\\AMBIENTE DE TRABALHO\\\\PROJETOS\\\\Semana Automação\\\\quiz\\\\pages\\\\inspire.vue",
-    "chunkName": "pages/inspire",
-    "_name": "_552afdb8"
-  },
-  {
-    "name": "index",
-    "path": "/",
-    "component": "E:\\\\AMBIENTE DE TRABALHO\\\\PROJETOS\\\\Semana Automação\\\\quiz\\\\pages\\\\index.vue",
-    "chunkName": "pages/index",
-    "_name": "_b58000c8"
+    "name": "",
+    "path": "",
+    "component": "E:\\\\AMBIENTE DE TRABALHO\\\\PROJETOS\\\\Semana Automação\\\\quiz\\\\node_modules\\\\@nuxt\\\\vue-app\\\\template\\\\pages\\\\index.vue",
+    "_name": "_436ffed7"
   }
 ]
