@@ -1,31 +1,31 @@
 module.exports = (sequelize, Sequelize) => {
     const options = {};
-    options['schema'] = 'dbo';
+    options['schema'] = 'quiz';
 
-    var Produto = sequelize.define('produto_teste', {
+    var Type = sequelize.define('QuestionType', {
         id: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
             allowNull: false,
             primaryKey: true
         },
-        nome: {
+        title: {
             type: Sequelize.STRING,
             allowNull: false
         },
-        preco: {
-            type: Sequelize.DOUBLE
-        },
-        descricao: Sequelize.STRING
+        
     }, options)
 
-    // Variavel utilizada para gerenciar associações de Modelos.
-    Produto['association'] = {
+    Type['association'] = {
         include: [
-            'user'
+            'QuestionStore'
         ]
     }
         
+    Type['relations'] = [
+       
+    ]
 
-    return Produto;
+
+    return Type;
 };

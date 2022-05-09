@@ -14,12 +14,35 @@
           </small>
         </footer>
       </blockquote>
+      <v-btn
+        v-on:click="metodo()"
+      >
+        clique aqui
+      </v-btn>
     </v-col>
   </v-row>
 </template>
 
 <script>
 export default {
-  name: 'InspirePage'
+  name: 'InspirePage',
+  methods: {
+    metodo(){
+       const newFruit = {
+                name: 'Pink Lady',
+                type: 'Apple',
+                id: 2,
+            }
+      console.log(this.$store)
+      // Use dispatch to call an action
+      this.$store.dispatch('shop/product/addFruit', newFruit)
+    }
+  },
+  computed: {
+        fruits() {
+          console.log(this.$store)
+            return this.$store
+        },
+    },
 }
 </script>

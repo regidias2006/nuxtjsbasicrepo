@@ -10,24 +10,24 @@ module.exports = (app, db) => {
         models.push(require('path').basename(file, '.js'))
     });
 
-    require("../../config/association.model.config")('product', db);
+    //require("../../config/association.model.config")('product', db);
 
 
     //Write manually your model
-    app.get(apiHost + 'product/testnewroute', (req, res) => {
+    // app.get(apiHost + 'product/testnewroute', (req, res) => {
 
-        // Find all element
-        db['product'].findAll({
-            include: db['product'].includes
-        }).then(obj => {
-            res.send(
-                {
-                    obj: obj
-                }
-            )
-        });
+    //     // Find all element
+    //     db['product'].findAll({
+    //         include: db['product'].includes
+    //     }).then(obj => {
+    //         res.send(
+    //             {
+    //                 obj: obj
+    //             }
+    //         )
+    //     });
 
-    })
+    // })
 
     // Write your new personal routes 
 

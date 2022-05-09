@@ -21,7 +21,7 @@ module.exports = (app, db) => {
 
     models.forEach(
         element => {
-            
+         
             require("../config/association.model.config")(element, db);
 
             app.post(apiHost + element, (req, res) => {
@@ -30,7 +30,7 @@ module.exports = (app, db) => {
                 db[element].create(req.body).then(obj => {
                     res.send(
                         {
-                            form: obj
+                            obj: obj
                         }
                     )
                 });
@@ -96,7 +96,7 @@ module.exports = (app, db) => {
                   .then(obj => {
                     res.send(
                         {
-                            obj: obj
+                            obj: req.body
                         }
                     )
                 });

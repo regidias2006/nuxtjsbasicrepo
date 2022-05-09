@@ -2,19 +2,37 @@ module.exports = (element, db) => {
 
     var associationModels = {}
 
-    if (db[element].association) {
-        associationModels = db[element].association.include
+    try {
+        if (db[element]) {
+            db[element].relations.forEach(obj => {
+                db.sequelize.models[obj.to].hasMany(db[element], { foreignKey: obj.foreignKey })
+            })
+        }
+
+    } catch (error) {
+        console.log('o erro persistiu:', error, element)
     }
 
-    if (associationModels.length > 0) {
-        
-        var arr = [];
 
-        associationModels.forEach(model => {
-            arr.push(db[model])
-        })
-        
-        db[element]['includes'] = arr
+    try {
+        if (db[element]) {
+            associationModels = db[element].association.include
+            if (associationModels.length > 0) {
+
+                var arr = [];
+
+                associationModels.forEach(model => {
+                    arr.push(db[model])
+                })
+
+                db[element]['includes'] = arr
+            }
+        }
+    } catch (error) {
+        console.log('o erro persistiu Associated:', error)
     }
+
+
+
 }
 

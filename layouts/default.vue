@@ -57,7 +57,7 @@
         <v-icon>mdi-menu</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-main>
+    <v-main class="inspire">
       <v-container>
         <Nuxt />
       </v-container>
@@ -116,3 +116,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+ .inspire{
+    background: url('https://4.bp.blogspot.com/-W0_HZx9NWfI/XD45qcBbaII/AAAAAAAAAn4/paWYCWR06l092c0vcBV2G9HAChXB3nhRwCKgBGAs/w919/astronaut-space-13-4k.jpg');
+    background-size: cover;
+  }
+</style>
