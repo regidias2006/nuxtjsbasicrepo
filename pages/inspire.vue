@@ -34,13 +34,14 @@ export default {
                 id: 2,
             }
       console.log(this.$store)
+      console.log(this.$store.state.shop.users.Users)
       // Use dispatch to call an action
-      this.$store.dispatch('shop/product/addFruit', newFruit)
+      //this.$store.dispatch('shop/product/addFruit', newFruit)
     }
   },
   computed: {
         fruits() {
-          console.log(this.$store)
+          console.log(this.$store.state.shop.users.users)
             return this.$store
         },
     },

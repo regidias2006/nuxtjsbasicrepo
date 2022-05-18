@@ -1,4 +1,3 @@
-const dbConfig = require("../environment/db_config");
 const Sequelize = require("sequelize");
 
 
@@ -14,7 +13,7 @@ const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, pr
         options: {
           userName: process.env.NODE_ENV == 'production' ? process.env.DB_USER : 'jagrdias',
           password: process.env.NODE_ENV == 'production' ? process.env.DB_PASS : 'Flex2041',
-          domain: 'AMERICAS',
+          domain: process.env.DOMAIN,
         },
       },
       options: {

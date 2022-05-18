@@ -10,7 +10,7 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true
         },
         question: {
-            type: Sequelize.STRING(1000),
+            type: Sequelize.STRING(4000),
             allowNull: false
         },
     }, options)
