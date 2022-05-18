@@ -111,7 +111,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Da Vinci QUIZ'
+      title: 'Da Vinci QUIZ '
     }
   }
 }
