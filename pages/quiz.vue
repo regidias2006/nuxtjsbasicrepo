@@ -387,7 +387,7 @@ export default {
       rgb(253 29 29 / 64%) 50%,
       rgb(252 176 69 / 61%) 100%
     );
-  background-repeat-x: no-repeat;
+  background-repeat: no-repeat;
   background-position-x: right;
   background-attachment: fixed;
   background-blend-mode: normal;
